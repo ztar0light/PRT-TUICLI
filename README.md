@@ -4,14 +4,13 @@ PRT_CLITUI is a Python‑based tool that provides both a **command‑line interf
 
 By utilizing the `prores_ks` encoder, this tool gives you granular control over bitrates, encoding modes (CBR/VBR), and metadata, making it ideal for both high-fidelity mastering and lightweight proxy generation.
 
-## My/intended use case
-This tool was originally meant for transcoding 10-bit video to ProRes to take advantage of 10-bit ProRes support in DaVinciResolve Free (V20+).
+###### Ztar's Note: This tool's intention is to faclilitate lazy-bum like me in batch transcoding 10-bit video to ProRes to take advantage of 10-bit ProRes support in DaVinciResolve Free as it doesn't support h.264/265 10-bit without the Studio license.
 
 ---
 
 ## ✨ **Features**
 
-### 🎛 Pro-Level Control
+### 🎛 Quality Control
 - **Encoding Modes**: Choose between **VBR** (Variable Bitrate) for maximum quality or **CBR** (Constant Bitrate) for predictable file sizes.
 - **ProRes Profiles**: Full support for `proxy`, `lt`, `422`, `hq`, `4444`, and `xq`.
 - **Bitrate Targeting**: Specify target Mbps without crashing; the script automatically manages FFmpeg's internal rate-control buffers.
