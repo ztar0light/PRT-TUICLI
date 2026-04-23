@@ -1,147 +1,97 @@
-### *ProResTranscode CLI & TUI — A Flexible ProRes Batch Transcoder*
+# ProRes Transcode CLI & TUI 
 
-PRT_CLITUI is a Python‑based tool that provides both a **command‑line interface (CLI)** and an **interactive text‑user interface (TUI)** for batch‑transcoding video files into **Apple ProRes**.  
-It supports custom bitrates, multiple ProRes profiles, audio/metadata passthrough, recursive folder scanning, and a persistent defaults system.
+PRT_CLITUI is a Python‑based tool that provides both a **command‑line interface (CLI)** and an **interactive text‑user interface (TUI)** for professional batch‑transcoding into **Apple ProRes**. 
 
-Whether you prefer typing flags or answering simple prompts, PRT_CLITUI adapts to your workflow.
+By utilizing the `prores_ks` encoder, this tool gives you granular control over bitrates, encoding modes (CBR/VBR), and metadata, making it ideal for both high-fidelity mastering and lightweight proxy generation.
 
 ---
 
 ## ✨ **Features**
 
-### 🎛 CLI Mode
-- Choose any ProRes profile:
-  - `proxy`, `lt`, `422`, `hq`, `4444`, `xq`
-- Set custom target Mbps
-- Audio passthrough (`--audio-passthrough`)
-- Metadata passthrough (`--metadata-passthrough`)
-- Recursive folder processing (`--recursive`)
-- Dry‑run mode (`--dry-run`)
-- Overwrite control (`--overwrite`)
-- Automatic output folder creation
-- Auto‑installs `ffmpeg-python` if missing
+### 🎛 Pro-Level Control
+- **Encoding Modes**: Choose between **VBR** (Variable Bitrate) for maximum quality or **CBR** (Constant Bitrate) for predictable file sizes.
+- **ProRes Profiles**: Full support for `proxy`, `lt`, `422`, `hq`, `4444`, and `xq`.
+- **Bitrate Targeting**: Specify target Mbps without crashing; the script automatically manages FFmpeg's internal rate-control buffers.
 
-### 🖥 TUI Mode (Interactive)
-When launched with **no arguments**, the app asks what you want to do:
-1. View help menu  
-2. Enter TUI mode  
-3. Run with saved defaults  
-4. Quit  
+### 🖥 Interface Options
+- **CLI Mode**: Fast, flag-based operation for power users and automation.
+- **TUI Mode**: A guided, color-coded interactive menu for those who prefer a "wizard" style experience.
+- **Defaults System**: Save your preferred settings (Mbps, Profile, Path) to a JSON file to run repetitive tasks with a single click.
 
-TUI mode walks you through:
-- Input/output folders  
-- ProRes profile selection (1–6)  
-- Target Mbps  
-- Audio passthrough (y/n)  
-- Metadata passthrough (y/n)  
-- Recursive scanning (y/n)  
-- Overwrite behavior (y/n)  
-- Dry‑run mode (y/n)  
-
-Then it shows a summary and asks:
-- **Run now?**  
-- **Save these settings as default?**
-
-Defaults are stored in a JSON file and can be reused automatically.
-
----
-
-## 📦 **Installation**
-
-Clone the repository:
-
-```
-git clone https://github.com/yourname/PRT_CLITUI.git
-cd PRT_CLITUI
-```
-
-Run the script:
-
-```
-python PRT_CLITUI.py
-```
-
-The script will automatically install `ffmpeg-python` if needed.
-
-You must have **FFmpeg** installed and available in your system PATH.
+### 🛠 Technical Capabilities
+- **Audio Passthrough**: Option to copy original audio or transcode to PCM 16-bit.
+- **Metadata Passthrough**: Preserve source timecode and tags.
+- **Recursive Scanning**: Process entire directory trees while maintaining a clean output structure.
+- **Dry-Run Mode**: Preview the exact FFmpeg commands before executing them.
 
 ---
 
 ## 🚀 **Usage**
 
-### ▶ Run with no arguments (recommended)
-```
+### **Interactive Mode (TUI)**
+Simply run the script without arguments to open the main menu:
+```bash
 python PRT_CLITUI.py
 ```
 
-You will be prompted to:
-- View help  
-- Enter TUI mode  
-- Run defaults  
-- Quit  
+### **CLI Mode Examples**
 
----
-
-### ▶ CLI Mode Examples
-
-#### ProRes LT at 150 Mbps
-```
-python PRT_CLITUI.py ./videos --profile lt --mbps 150
+**ProRes 422 VBR at 150 Mbps (Standard High Quality)**
+```bash
+python PRT_CLITUI.py ./source -o ./output -p 422 -m 150 --mode VBR
 ```
 
-#### Process subfolders
-```
-python PRT_CLITUI.py ./videos --recursive
-```
-
-#### ProRes HQ at 220 Mbps with audio passthrough
-```
-python PRT_CLITUI.py ./videos --profile hq --mbps 220 --audio-passthrough
+**ProRes LT CBR at 50 Mbps (Strict File Size)**
+```bash
+python PRT_CLITUI.py ./source -p lt -m 50 --mode CBR --overwrite
 ```
 
-#### Dry run (show commands only)
-```
-python PRT_CLITUI.py ./videos --dry-run
-```
-
-#### Overwrite existing files
-```
-python PRT_CLITUI.py ./videos --overwrite
+**Recursive Scan with Audio & Metadata Passthrough**
+```bash
+python PRT_CLITUI.py ./raw_footage -r -ap -mp
 ```
 
 ---
 
-## 📁 **Output**
+## 📂 **Encoding Logic**
 
-Transcoded files are written to the output folder (default: `./output`).  
-If the folder does not exist, it is created automatically.
+Unlike standard tools, this script intelligently configures the `prores_ks` rate control:
 
----
-
-## 🧠 **Bitrate Logic**
-
-The script converts Mbps → FFmpeg’s `bits_per_mb` using a scaling formula.  
-This allows approximate ProRes bitrate targeting while keeping full control.
+* **VBR (Variable):** Sets a 1.5x max-rate ceiling and a generous buffer, allowing the encoder to spend bits on high-motion scenes while maintaining your target average.
+* **CBR (Constant):** Sets min, max, and target rates to the same value with a constricted buffer to force a consistent data stream.
 
 ---
 
-## 🛠 **Requirements**
+## 📦 **Installation & Requirements**
 
-- Python 3.8+
-- FFmpeg installed and accessible in PATH
-- `ffmpeg-python` (auto‑installed)
+1.  **FFmpeg**: You must have FFmpeg installed and added to your System PATH.
+2.  **Python**: Version 3.8 or higher.
+3.  **Setup**:
+    ```bash
+    git clone https://github.com/yourname/PRT_CLITUI.git
+    cd PRT_CLITUI
+    python PRT_CLITUI.py
+    ```
+
+*Note: This version communicates directly with the FFmpeg binary for maximum stability and no longer requires external Python wrappers.*
 
 ---
 
-## 🤝 **Contributing**
+## ⚙️ **Arguments Reference**
 
-Pull requests are welcome.  
-If you have ideas for new features (parallel encoding, watch‑folder mode, GUI, presets, etc.), open an issue.
+| Flag | Long Flag | Description |
+| :--- | :--- | :--- |
+| `-o` | `--output` | Output directory (default: "output") |
+| `-p` | `--profile` | ProRes profile (proxy, lt, 422, hq, 4444, xq) |
+| `-m` | `--mbps` | Target bitrate in Mbps |
+| `--mode` | `--mode` | Encoding mode: **VBR** or **CBR** |
+| `-ap` | `--audio-passthrough` | Copy audio streams instead of re-encoding |
+| `-mp` | `--metadata-passthrough`| Copy source metadata |
+| `-r` | `--recursive` | Scan subfolders for video files |
+| `-dr` | `--dry-run` | Print commands without executing |
+| `-or` | `--overwrite` | Force overwrite of existing files |
 
 ---
 
 ## 📄 **License**
-
-MIT License.
-
----
+MIT License. Feel free to use and modify for your post-production pipelines.

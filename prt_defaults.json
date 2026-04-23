@@ -1,0 +1,12 @@
+{
+    "input": ".",
+    "output": ".",
+    "profile": "422",
+    "mbps": 200,
+    "mode": "VBR",
+    "audio_passthrough": true,
+    "metadata_passthrough": false,
+    "recursive": false,
+    "overwrite": true,
+    "dry_run": false
+}
