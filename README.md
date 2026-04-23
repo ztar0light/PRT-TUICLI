@@ -1,8 +1,11 @@
 # ProRes Transcode CLI & TUI 
 
-PRT_CLITUI is a Python‑based tool that provides both a **command‑line interface (CLI)** and an **interactive text‑user interface (TUI)** for professional batch‑transcoding into **Apple ProRes**. 
+PRT_CLITUI is a Python‑based tool that provides both a **command‑line interface (CLI)** and an **interactive text‑user interface (TUI)** for batch‑transcoding video into **Apple ProRes**.
 
 By utilizing the `prores_ks` encoder, this tool gives you granular control over bitrates, encoding modes (CBR/VBR), and metadata, making it ideal for both high-fidelity mastering and lightweight proxy generation.
+
+## My/intended use case
+This tool was originally meant for transcoding 10-bit video to ProRes to take advantage of 10-bit ProRes support in DaVinciResolve Free (V20+).
 
 ---
 
