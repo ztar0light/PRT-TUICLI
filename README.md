@@ -142,6 +142,6 @@ If you have ideas for new features (parallel encoding, watch‑folder mode, GUI,
 
 ## 📄 **License**
 
-MIT License (or whichever you choose).
+MIT License.
 
 ---
